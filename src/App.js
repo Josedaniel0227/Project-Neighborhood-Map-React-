@@ -46,7 +46,15 @@ class App extends Component {
       zoom: 14
     })
 
+    // Creates infowindow
+    var infowindow = new window.google.maps.InfoWindow()
+
     this.state.places.map(newVenue => {
+
+      // InfoWindow content
+      var contentString = `<p>${newVenue.venue.name}</p>`+`${newVenue.venue.location.address}`
+
+      // Marker
       var marker = new window.google.maps.Marker({
         position: {
           lat: newVenue.venue.location.lat,
@@ -55,23 +63,28 @@ class App extends Component {
         map: map,
         title: newVenue.venue.name
       })
-    })
-  }
+      // Event listener for infowindow
+      marker.addListener('click', function() {
+        infowindow.setContent(contentString)
+        infowindow.open(map, marker);
+      })
+  })
+}
 
   render() {
     return (
       <main>
-         <div id="map"></div>
+        <div id="map"></div>
       </main>
     );
   }
 }
 
 function loadJS(src) {
-    var ref = window.document.getElementsByTagName("script")[0];
-    var script = window.document.createElement("script");
-    script.src = src;
-    script.async = true;
+  var ref = window.document.getElementsByTagName("script")[0];
+  var script = window.document.createElement("script");
+  script.src = src;
+  script.async = true;
     script.defer = true;
     ref.parentNode.insertBefore(script, ref);
 }
