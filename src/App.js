@@ -25,10 +25,11 @@ class App extends Component {
     const parameters = {
       client_id: "XEQCMYPEO1DXENH4KWDPLDH4UQD23OB5AEVQ5PBUT1XGQC1U",
       client_secret: "DYFNRAVZZLOT3MYJNZ21H5JL135STKXOWBPXI2UBOFNHSXFU",
-      query: "food",
+      query: "",
       near: "Miami Beach",
       v:"20182507"
     }
+    //Axios is use to fetch data and manipulate it.
     axios.get(endPoint + new URLSearchParams(parameters))
       .then(response => {
         this.setState({
@@ -61,10 +62,14 @@ class App extends Component {
           lng: newVenue.venue.location.lng
         },
         map: map,
-        title: newVenue.venue.name
+        title: newVenue.venue.name,
+        animation: window.google.maps.Animation.DROP
       })
+      
       // Event listener for infowindow
       marker.addListener('click', function() {
+        marker.setAnimation(window.google.maps.Animation.BOUNCE);
+        marker.setAnimation(null);
         infowindow.setContent(contentString)
         infowindow.open(map, marker);
       })
@@ -85,8 +90,8 @@ function loadJS(src) {
   var script = window.document.createElement("script");
   script.src = src;
   script.async = true;
-    script.defer = true;
-    ref.parentNode.insertBefore(script, ref);
+  script.defer = true;
+  ref.parentNode.insertBefore(script, ref);
 }
 
 export default App;
