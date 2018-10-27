@@ -1,97 +1,83 @@
 import React, { Component } from 'react';
 import './App.css';
-import axios from 'axios';
+import SideBar from './components/SideBar.js';
+import Map from './components/Map';
+import SquareAPI from "./SquareAPI/Index.js"
+import NavBar from "./components/NavBar.js";
 
 
 class App extends Component {
-
-  state = {
-    places: []
+  constructor() {
+    super();
+    this.state = {
+      venues: [],
+      markers: [],
+      center:[],
+      updateSuperState: obj => {
+        this.setState(obj);
+      }
+    };
   }
 
-  componentDidMount() {
-    this.getVenues()
-  }
-
-  renderMap = () => {
-    // Connects the initMap() function to the global window context,
-    window.initMap = this.initMap;
-    // Asynchronously load the Google Maps script, passing in the callback reference
-    loadJS('https://maps.googleapis.com/maps/api/js?key=AIzaSyCVhwQOB3UIeFXLXnZcZm6EwYjIY1g1Hg0&callback=initMap')
-  }
-
-  getVenues = () => {
-    const endPoint = "https://api.foursquare.com/v2/venues/explore?"
-    const parameters = {
-      client_id: "XEQCMYPEO1DXENH4KWDPLDH4UQD23OB5AEVQ5PBUT1XGQC1U",
-      client_secret: "DYFNRAVZZLOT3MYJNZ21H5JL135STKXOWBPXI2UBOFNHSXFU",
-      query: "",
-      near: "Miami Beach",
-      v:"20182507"
-    }
-    //Axios is use to fetch data and manipulate it.
-    axios.get(endPoint + new URLSearchParams(parameters))
-      .then(response => {
-        this.setState({
-          places: response.data.response.groups[0].items
-        },   this.renderMap())
-      })
-      .catch(error => {
-        console.log(error);
-      })
-  }
-
-  initMap = () => {
-    var map = new window.google.maps.Map(document.getElementById('map'), {
-      center: {lat: 25.790, lng: -80.139},
-      zoom: 14
+  closeAllMarkers = ()=> {
+    const markers = this.state.markers.map(marker => {
+      marker.isOpen = false;
+      return marker;
     })
 
-    // Creates infowindow
-    var infowindow = new window.google.maps.InfoWindow()
+    this.setState({ markers: Object.assign(this.state.markers, markers) });
+  };
 
-    this.state.places.map(newVenue => {
+  handleMarkerClick = (marker) => {
+    this.closeAllMarkers();
+    marker.isOpen = true;
+    this.setState({markers: Object.assign(this.state.markers, marker) });
+    const venue = this.state.venues.find(venue => venue.id = marker.id);
 
-      // InfoWindow content
-      var contentString = `<p>${newVenue.venue.name}</p>`+`${newVenue.venue.location.address}`
+    SquareAPI.getVenuesDetails(marker.id).then(res => {
+    const newVenue = Object.assign(venue, res.response.venue);
+    this.setState({ venues: Object.assign(this.state.venues, newVenue) });
 
-      // Marker
-      var marker = new window.google.maps.Marker({
-        position: {
-          lat: newVenue.venue.location.lat,
-          lng: newVenue.venue.location.lng
-        },
-        map: map,
-        title: newVenue.venue.name,
-        animation: window.google.maps.Animation.DROP
-      })
-      
-      // Event listener for infowindow
-      marker.addListener('click', function() {
-        marker.setAnimation(window.google.maps.Animation.BOUNCE);
-        marker.setAnimation(null);
-        infowindow.setContent(contentString)
-        infowindow.open(map, marker);
-      })
-  })
-}
+    });
+  };
+
+  handleListelementsClick = venue =>{
+    const marker = this.state.markers.find(marker => marker.id === venue.id);
+    this.handleMarkerClick(marker);
+  };
+
+  componentDidMount() {
+    SquareAPI.search({
+      query: "hotel",
+      near: "Miami Beach",
+    }).then(results => {
+      const { venues } = results.response;
+      const { center } = results.response.geocode.feature.geometry;
+      const markers = venues.map(venue => {
+        return {
+          lat: venue.location.lat,
+          lng: venue.location.lng,
+          isOpen: false,
+          isVisible: true,
+          id:venue.id
+        };
+      });
+      this.setState({ venues,center, markers})
+
+    });
+  }
 
   render() {
     return (
-      <main>
-        <div id="map"></div>
-      </main>
+
+      <div className="App">
+        <NavBar />
+        <SideBar {...this.state}handleListelementsClick = {this.handleListelementsClick}/>
+        <Map {...this.state} handleMarkerClick={this.handleMarkerClick}/>
+      </div>
+
     );
   }
-}
-
-function loadJS(src) {
-  var ref = window.document.getElementsByTagName("script")[0];
-  var script = window.document.createElement("script");
-  script.src = src;
-  script.async = true;
-  script.defer = true;
-  ref.parentNode.insertBefore(script, ref);
 }
 
 export default App;

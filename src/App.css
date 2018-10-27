@@ -1,5 +1,8 @@
 .App {
   text-align: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .App-logo {
@@ -30,12 +33,163 @@
     transform: rotate(360deg);
   }
 }
-#map {
-       height: 100vh;
-     }
-     /* Optional: Makes the sample page fill the window. */
-     html, body {
-       height: 100%;
-       margin: 0;
-       padding: 0;
-     }
+
+/* ************ SideBar, VenuesList and ListElements styling */
+
+.SideBar {
+    background-color: #26587F;
+    width: 30%;
+    height: 93%;
+    z-index: 1;
+    overflow-y: scroll;
+    bottom: 0;
+    position: fixed;
+  }
+
+#search {
+  width: 100%;
+  height: 4%;
+  font-size: 100%;
+  border-color: red;
+  border-width: 3px;
+}
+.VenuesList {
+    padding: 5%;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+.ListElements{
+  list-style: none;
+  font-size: 100%;
+  padding: 2.5%;
+  margin-top: 6%;
+  margin-left: 2%;
+  margin-right: 2%;
+  box-shadow: 1px 1px 1px;
+  cursor: pointer;
+  background-color: #ECD6EB;
+  display: flex;
+  align-items: center;
+  flex-flow: column-reverse;
+  border-radius: 4px;
+}
+
+.ListElements:hover {
+  color: white;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+/* ************ Map and InfoWindow ************  */
+
+.gm-style-iw{
+cursor: pointer;
+box-shadow: 1px 1px 1px;
+background: aliceblue;
+border-radius: 4px;
+}
+
+
+.containerElement{
+  bottom: 0;
+  position: absolute;
+  display: block;
+  right: 0;
+  width: 70vw;
+  max-width: 100vw;
+}
+/* ************ navBar styles ************ */
+
+
+#nav{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 7%;
+  max-height: 80px;
+  z-index: 1;
+  background-color: #26587F;
+
+}
+#navbar {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  padding-right: 30px;
+}
+
+#navbarHeader {
+  font-size: 2rem;
+  color: #a9d9ff;
+}
+
+/* ************ filter button ************ */
+#filterButton{
+  height: 5%;
+width: 100px;
+margin-left: 10px;
+background-color: palevioletred;
+border: none;
+border-radius: 3px;
+box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+cursor: pointer;
+font-size: 100%;
+}
+
+#filterButton:hover {
+  color: white;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+
+/* ************ Style Applied to Sidebar and Map on filter Button Click */
+
+.expandMap {
+  width: 100%;
+  max-width: 100vw;
+  bottom: 0;
+  position: absolute;
+  display: block;
+}
+
+.hidden {
+  position: relative;
+  transition: position 0.5s ease;
+  right: 500px;
+  width: 0;
+  min-width: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+}
+
+/* ************ Media Queries ************ */
+
+@media screen and (max-width: 900px) {
+  .VenuesList {
+    padding: 5%;
+    display: inline;
+  }
+}
+
+@media only screen and (max-device-width: 812px) and (orientation: landscape) {
+  #search {
+    height: 7%;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #navbarHeader {
+    font-size: 1.6rem;
+  }
+  .VenuesList {
+    padding: 5%;
+    display: inline;
+  }
+}
