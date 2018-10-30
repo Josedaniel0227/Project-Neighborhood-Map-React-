@@ -36,7 +36,7 @@ class App extends Component {
    SquareAPI.getVenueDetails(marker.id).then(res => {
        const newVenue = Object.assign(venue, res.response.venue);
        this.setState({ venues: Object.assign(this.state.venues, newVenue) })
-       console.log(newVenue);
+      // console.log(newVenue);
      });
  };
 
@@ -45,11 +45,11 @@ class App extends Component {
    this.handleMarkerClick(marker)
  }
 
+searchVenues = (query, near) => {
 
-  componentDidMount() {
     SquareAPI.search({
-      query: "hotel",
-      near: "Miami Beach",
+      query: query,
+      near: near,
     }).then(results => {
       const { venues } = results.response;
       const { center } = results.response.geocode.feature.geometry;
@@ -63,9 +63,16 @@ class App extends Component {
         };
       });
       this.setState({ venues,center, markers})
-
     });
+    // Error alert if any problems loading Google Maps API. 
+    window.gm_authFailure = () =>
+    alert(
+      "Google Maps has encountered an error."
+    );
   }
+componentDidMount() {
+  this.searchVenues("hotel", "miami beach");
+ }
 
   render() {
     return (
