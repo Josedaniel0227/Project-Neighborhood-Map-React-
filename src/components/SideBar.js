@@ -11,7 +11,7 @@ constructor() {
 }
 // here it hides the list of venues as typed
 changeFilterVenues = () => {
-  if (this.state.query.trim()!= "") {
+  if (this.state.query.trim()!== "") {
     const venues = this.props.venues.filter(venue =>
       venue.name.toLowerCase().includes(this.state.query.toLowerCase())
     );

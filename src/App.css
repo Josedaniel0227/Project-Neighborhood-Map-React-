@@ -50,7 +50,7 @@
   width: 100%;
   height: 4%;
   font-size: 100%;
-  border-color: red;
+  border-color: #61dafb;
   border-width: 3px;
 }
 .VenuesList {
@@ -67,10 +67,10 @@
   margin-right: 2%;
   box-shadow: 1px 1px 1px;
   cursor: pointer;
-  background-color: #ECD6EB;
+  background-color: #e4b7e2;
   display: flex;
   align-items: center;
-  flex-flow: column-reverse;
+  flex-flow: row;
   border-radius: 4px;
 }
 
@@ -121,7 +121,7 @@ border-radius: 4px;
 
 #navbarHeader {
   font-size: 2rem;
-  color: #a9d9ff;
+  color: #ff83da;
 }
 
 /* ************ filter button ************ */
@@ -129,7 +129,7 @@ border-radius: 4px;
   height: 5%;
 width: 100px;
 margin-left: 10px;
-background-color: palevioletred;
+background-color: #29cc90;
 border: none;
 border-radius: 3px;
 box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
@@ -167,6 +167,7 @@ html, body {
   margin: 0;
   padding: 0;
   font-size: 14px;
+  font-family: 'courier';
 }
 
 /* ************ Media Queries ************ */

@@ -20,7 +20,7 @@ class NavBar extends Component {
               Filter
             </button>
           </div>
-          <h1 id="navbarHeader">Miami Beach</h1>
+          <h1 id="navbarHeader">MIAMI BEACH</h1>
         </nav>
       );
     }

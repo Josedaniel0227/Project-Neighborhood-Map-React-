@@ -75,26 +75,31 @@ const MyMapComponent = withScriptjs(withGoogleMap((props) =>
 
   >
     {props.markers &&
-      props.markers.filter(marker => marker.isVisible).map((marker, idx,arr) => {
-        const venueInfo = props.venues.find(venue=> venue.id = marker.id)
+      props.markers.filter(marker => marker.isVisible).map((marker, idx, arr) => {
+        const venueInfo = props.venues.find(venue=> venue.id === marker.id)
         return (
          <Marker
            key={idx}
            position={{ lat: marker.lat, lng: marker.lng }}
            onClick={() => props.handleMarkerClick(marker)}
-           animation = {arr.length === 1 ? google.maps.Animation.BOUNCE : google.maps.Animation.DROP}
-
+           animation={arr.length === 1
+ 						? google.maps.Animation.BOUNCE
+ 						: google.maps.Animation.DROP}
            >
 
          {marker.isOpen && venueInfo.bestPhoto &&  (
 
            <InfoWindow>
              <React.Fragment>
+               <p>{venueInfo.name}</p>
                <img
                  src={`${venueInfo.bestPhoto.prefix}200x200${
                    venueInfo.bestPhoto.suffix}`}
                    alt={venueInfo.name}/>
-                 <p>{venueInfo.name}</p>
+                   <p> {venueInfo.location['address']}</p>
+                   <p><a href="tel:{venueInfo.contact.phone}"> {venueInfo.contact.phone}</a></p>
+                       {venueInfo.rating && <p> Rating: {venueInfo.rating}</p>}
+                       <p><a href="{venueInfo.url}">Website</a> </p>
                </React.Fragment>
              </InfoWindow>
 
